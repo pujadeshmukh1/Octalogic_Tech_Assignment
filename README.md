@@ -1,1 +1,0 @@
-# Octalogic_Tech_Assignment
