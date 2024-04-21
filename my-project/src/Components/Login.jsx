@@ -21,14 +21,25 @@ function Login() {
     setError('');
     setError1('');
 
+    // Regular expression to validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!form.email) {
       setError('Please Enter Email ID.');
       return;
+    } else if (!emailRegex.test(form.email)) {
+      setError('Please Enter a Valid Email ID.');
+      return;
     }
+
     if (!form.password) {
       setError1('Please Enter Password.');
       return;
+    } else if (form.password.length < 6) {
+      setError1('Password must be at least 6 characters long.');
+      return;
     }
+
     localStorage.setItem('email', form.email);
     localStorage.setItem('password', form.password);
     navigate('/home');

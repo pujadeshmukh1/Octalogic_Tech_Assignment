@@ -1,10 +1,20 @@
 import { useState, useEffect } from "react";
 import SideBar from "./SideBar";
 import HorizontalSplitTwoToneIcon from '@mui/icons-material/HorizontalSplitTwoTone';
-
+import { v4 as uuidv4 } from 'uuid';
 const Coures = () => {
   const [isAddingItem, setIsAddingItem] = useState(false);
   const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
+  
+ // Function to generate a unique identifier
+ const generateUniqueId = () => {
+  return uuidv4();
+};
+
+  const [selectedCourseId, setSelectedCourseId] = useState(null);
+  const [selectedAction, setSelectedAction] = useState(null);
+
+  
   const [newCoures, setNewCoures] = useState({
     name: "",
     description: "",
@@ -23,9 +33,9 @@ const Coures = () => {
     course.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleForgotPasswordClick = () => {
-    setShowForgotPasswordPopup(true);
-  };
+  // const handleForgotPasswordClick = () => {
+  //   setShowForgotPasswordPopup(true);
+  // };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -45,13 +55,16 @@ const Coures = () => {
       dayOfWeek: "",
       ofStudents: "",
       price: "",
-      status: "closed",
+      status: "",
     });
   };
 
   const handleSaveItem = () => {
-    // Save newCategory to local storage
-    const updatedCategories = [...coures, newCoures];
+    // Generate a unique identifier for the new course
+    const newCourse = { ...newCoures, _id: generateUniqueId() }; // You need to implement generateUniqueId() function
+    
+    // Save newCourse to local storage
+    const updatedCategories = [...coures, newCourse];
     localStorage.setItem("coures", JSON.stringify(updatedCategories));
     setCoures(updatedCategories);
     setIsAddingItem(false);
@@ -64,20 +77,110 @@ const Coures = () => {
       dayOfWeek: "",
       ofStudents: "",
       price: "",
-      status: "closed",
+      status: "",
     });
   };
   
+  // When fetching courses from an external source or local storage
   useEffect(() => {
     const storedCategories = localStorage.getItem("coures");
     if (storedCategories) {
-      setCoures(JSON.parse(storedCategories));
+      const parsedCategories = JSON.parse(storedCategories);
+      // Ensure that each course object has a unique identifier
+      const updatedCategories = parsedCategories.map(course => ({
+        ...course,
+        _id: course._id || generateUniqueId() // Assign a new unique identifier if it doesn't exist
+      }));
+      setCoures(updatedCategories);
     }
   }, []);
   const handleForgotPasswordClose = () => {
     setShowForgotPasswordPopup(false);
   };
+  // const handleForgotPasswordClick = (courseId) => {
+  //   setSelectedCourseId(courseId);
+  //   setShowForgotPasswordPopup(true);
+  // };
+  
 
+  // const handleCourseAction = (action) => {
+  //   // Find the selected course
+  //   const selectedCourse = coures.find(course => course._id === selectedCourseId);
+  //   if (!selectedCourse) return;
+
+  //   // Update the status based on the action
+  //   let updatedStatus;
+  //   switch (action) {
+  //     case 'edit':
+  //       // Perform edit action
+  //       break;
+  //     case 'close':
+  //       updatedStatus = 'closed';
+  //       break;
+  //     case 'archive':
+  //       updatedStatus = 'archive';
+  //       break;
+  //     default:
+  //       break;
+  //   }
+
+  //   // Update the status in the courses array
+  //   const updatedCourses = coures.map(course => {
+  //     if (course._id === selectedCourseId) {
+  //       return { ...course, status: updatedStatus };
+  //     }
+  //     return course;
+  //   });
+
+  //   // Save the updated courses to local storage and state
+  //   localStorage.setItem("coures", JSON.stringify(updatedCourses));
+  //   setCoures(updatedCourses);
+
+  //   // Close the popup
+  //   setShowForgotPasswordPopup(false);
+  // };
+  const handlePopupOpen = (courseId, status) => {
+    setSelectedCourseId(courseId);
+    setShowForgotPasswordPopup(true);
+    setSelectedAction(status === 'archive' ? 'unarchive' : 'archive');
+  };
+  
+  const handleCourseAction = (action) => {
+    const updatedCourses = coures.map(course => {
+      if (course._id === selectedCourseId) {
+        let updatedStatus;
+        switch (action) {
+          case 'edit':
+            updatedStatus = 'Active';
+            // Perform edit action
+            break;
+          case 'Closed':
+            updatedStatus = 'Closed';
+            break;
+          case 'Archived':
+            updatedStatus = 'Archived';
+            break;
+          case 'unarchive':
+            updatedStatus = 'Active'; // Change status back to 'Active' when unarchiving
+            break;
+          default:
+            break;
+        }
+        return { ...course, status: updatedStatus };
+      }
+      return course;
+    });
+  
+    // Save the updated courses to local storage and state
+    localStorage.setItem("coures", JSON.stringify(updatedCourses));
+    setCoures(updatedCourses);
+  
+    // Close the popup
+    setShowForgotPasswordPopup(false);
+  };
+  
+  
+  
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-grow flex">
@@ -99,14 +202,11 @@ const Coures = () => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
-              </div>
-            )}
-                          {isAddingItem ? (
+                </div>
+                )}
+                {isAddingItem ? (
                 <div>
-                  <div className="flex">
-                    
-                    
-                  </div>
+                 
                   <div className="mb-4 mt-2">
                     <div className="flex  mx-[30%] bg-white">
                     <div className="w-[95%] mx-5">
@@ -190,9 +290,9 @@ const Coures = () => {
                           onChange={handleInputChange}
                         >
                           <option value="Status">Status</option>
-                          <option value="active">Active</option>
-                          <option value="closed">Closed</option>
-                          <option value="archive">Archive</option>
+                          <option value="Active">Active</option>
+                          <option value="Closed">Closed</option>
+                          <option value="Archived">Archived</option>
                         </select>
                         <div className="flex justify-end py-4">
                       <button
@@ -209,27 +309,26 @@ const Coures = () => {
                       </button>
                     </div>
                     </div>
-                      </div>
-                      </div>
+                    </div>
+                    </div>
   
-                   
-                  </div>
+                    </div>
                 </div>
-            ) : (
-              <div className="w-full overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300 mb-4 bg-[#FFFF]">
-            <thead>
-            <tr className="">
-            <th className="p-2 flex justify-center ">
-            <p className="text-[20px]">Name</p>
-            </th>
-                               <th className="p-2 ">
+                ) : (
+                <div className="w-full overflow-x-auto">
+                  <table className="w-full border-collapse border border-gray-300 mb-4 bg-[#FFFF]">
+                  <thead>
+                    <tr className="">
+                    <th className="p-2 flex justify-center ">
+                    <p className="text-[20px]">Name</p>
+                      </th>
+                        <th className="p-2 ">
                            <div className="flex justify-center">
                              <p className="">Description</p>  
                            </div>
-                         </th>
+                        </th>
 
-                         <th className="p-2 ">
+                        <th className="p-2 ">
                            <div className="flex justify-center">
                             <p className="">Instructor</p>  
                            </div>
@@ -284,14 +383,15 @@ const Coures = () => {
          <td className="p-2 text-center ">{course.dayOfWeek}</td>
          <td className="p-2 text-center ">{course.ofStudents}</td>
          <td className="p-2 text-center ">{course.price}</td>
-         <td className="p-2 text-center rounded-md" style={{ backgroundColor: course.status === 'active' ? '#CFF9DF' : course.status === 'closed' ? '#FEC0CA' : course.status === 'archive' ? '#E5E7EB' : '' }}>
+         <td className="p-2 text-center rounded-md" style={{ backgroundColor: course.status === 'Active' ? '#CFF9DF' : course.status === 'Closed' ? '#FEC0CA' : course.status === 'Archived' ? '#E5E7EB' : '' }}>
           {course.status}
          </td>
          <td className="p-2 ">
            <div className="flex space-x-2 justify-center">
-             <HorizontalSplitTwoToneIcon onClick={handleForgotPasswordClick}/>
+           <HorizontalSplitTwoToneIcon onClick={() => handlePopupOpen(course._id)} />
           
            </div>
+           
          </td>
 
           </tr>
@@ -320,16 +420,19 @@ const Coures = () => {
       {showForgotPasswordPopup && (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
     <div className="bg-white px-5 pb-4 pt-2 rounded-md">
-    <div className="flex justify-end">
-    <button onClick={handleForgotPasswordClose}>X</button>
-    </div>  
-      <h1>Edit Course</h1>
-      <h1>Close Course</h1>
-      <h1>Archive Course</h1>
-      
+      <div className="flex justify-end">
+        <button onClick={handleForgotPasswordClose}>X</button>
+      </div>
+    
+      <button onClick={() => handleCourseAction('edit')}>Edit Course</button><br />
+      <button onClick={() => handleCourseAction('Closed')}>Close Course</button><br />
+      <button onClick={() => handleCourseAction('Archived')}>Archived Course
+     
+</button>
     </div>
   </div>
 )}
+
     </div>
   );
 };
