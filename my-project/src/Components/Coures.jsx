@@ -84,10 +84,11 @@ const Coures = () => {
         <SideBar />
         <div className="container mx-auto">
           <div className="bg-[#F4F4F4] pb-4 shadow-md px-4 py-3 h-auto">
+           <h1 className="text-3xl font-bold mb-2 text-gray-500">Courses</h1>
             {!isAddingItem && (
               <div className="flex  mb-4">
                 <div className="flex gap-3">
-                  <h1 className="text-xl font-bold mb-4">Course List</h1>
+                  <h1 className="text-xl font-bold mb-4 text-gray-500">Course List</h1>
                 </div>
                 <div className="flex ml-auto">
                   <input
@@ -306,7 +307,7 @@ const Coures = () => {
             )}
              <div className="flex justify-end mt-[45%]">
               <button
-                className="bg-[#FEDFE1] text-white px-4 py-2 rounded text-black"
+                className="bg-[#FEDFE1] px-4 py-2 rounded text-black"
                 onClick={() => setIsAddingItem(true)}
               >
                 + Add Item

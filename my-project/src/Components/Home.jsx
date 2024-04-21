@@ -91,7 +91,12 @@ const Home = () => {
               <Card key={index} title={card.title} content={card.content} />
             ))}
           </div>
-          <h1 className="text-2xl font-bold text-gray-500 mt-4">LATEST ENROLMENTS</h1>
+
+          <div className="flex justify-between">
+            <h1 className="text-xl font-bold text-gray-500 mt-4">LATEST ENROLMENTS</h1>
+            <h1 className="text-xl font-bold text-[#901E75] mt-4">View All Courses</h1>
+          </div>
+
           <div className="overflow-x-auto">
             <table className="w-full mt-4 bg-white">
               {/* Table Header */}
@@ -119,9 +124,13 @@ const Home = () => {
             </table>
           </div>
           {/* Similarly for Best Students */}
-          <h1 className="text-2xl font-bold text-gray-500 mt-4">BEST STUDENTS</h1>
-<div className="overflow-x-auto">
-  <table className="w-full mt-4 bg-white">
+          <div className="flex justify-between">
+            <h1 className="text-xl font-bold text-gray-500 mt-4">BEST STUDENTS</h1>
+            <h1 className="text-xl font-bold text-[#901E75] mt-4">View All Students</h1>
+          </div>
+
+          <div className="overflow-x-auto">
+          <table className="w-full mt-4 bg-white">
     {/* Table Header */}
     <thead>
       <tr>

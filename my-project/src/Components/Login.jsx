@@ -39,6 +39,11 @@ function Login() {
     <div className='flex items-center justify-center min-h-screen bg-cover bg-center' style={{ backgroundImage: 'url("https://img.freepik.com/free-photo/abstract-digital-grid-black-background_53876-97647.jpg?size=626&ext=jpg&ga=GA1.1.808827659.1713612951&semt=ais")' }}>
       <div className='w-full max-w-lg px-6'>
         <div className='bg-white pb-8 pt-10 mt-16 shadow-md p-6 rounded-md'>
+        <div className='flex justify-center'>
+        <img src="https://s3-alpha-sig.figma.com/img/b77e/850f/66a2299ddad75dbfff48fcc92195ba0a?Expires=1714348800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=nuTsHxoH3bgwQ4YKcgOufUSIHZAKtr2br0r719PBAjZP67iyiIIq8Nn11i5oc~NFyiiPcqCCArbpmvFhkJdWHsiLe6NUtnRYzmV2U6Ja9tvsTSL2J8UqcDMUFNXJE192P-2E0VQIQ6SuebUNmG6wQdv-r5A~KGaUxL9Vw7GRcnNmRciuPUexQxmd0mpLI0X7L0ltmYVzswTNUcKRqLgJ2npZk6PHCBvUa84phjps03Xeqcd~WpLohky8Cnd1y2-K9n1Zz9gWyPIquYYnyBUL8KOGvfs7lCwbCzobJ8PzZIRsbxvBg2yj47DeYfJsZeU3WdmIdtUk9WUCg-nAOe8Dcg__" 
+            alt="" />
+        </div>
+        
           <p className="text-[#717070] text-center mb-6 text-2xl">Welcome to Octalogic Tech</p>
           <form onSubmit={handleSubmit}>
             <div className='mx-5'>
