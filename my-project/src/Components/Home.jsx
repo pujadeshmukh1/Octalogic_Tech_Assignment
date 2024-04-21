@@ -85,7 +85,7 @@ const Home = () => {
       </div>
       <div className="bg-[#F4F4F4] w-full h-auto pb-4">
         <div className="mx-5 mt-5">
-          <h1 className="text-2xl font-bold text-gray-500">Overview</h1>
+          <h1 className="text-2xl font-bold text-gray-500 mb-4">Overview</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {cardsData.map((card, index) => (
               <Card key={index} title={card.title} content={card.content} />

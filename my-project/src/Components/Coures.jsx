@@ -84,7 +84,7 @@ const Coures = () => {
         <SideBar />
         <div className="container mx-auto">
           <div className="bg-[#F4F4F4] pb-4 shadow-md px-4 py-3 h-auto">
-           <h1 className="text-3xl font-bold mb-2 text-gray-500">Courses</h1>
+           <h1 className="text-3xl font-bold mb-4 text-gray-500">Courses</h1>
             {!isAddingItem && (
               <div className="flex  mb-4">
                 <div className="flex gap-3">
